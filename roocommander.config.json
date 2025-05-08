@@ -1,24 +1,8 @@
 {
-    "commands": [
-        {
-            "name": "generate-contact-api",
-            "description": "Generates the backend API for managing contacts",
-            "command": "node backend/app.js"
-        },
-        {
-            "name": "generate-contact-form",
-            "description": "Generates the frontend form for managing contacts",
-            "command": "npx http-server frontend -p 8080"
-        },
-        {
-            "name": "connect-api-ui",
-            "description": "Connects the frontend to the backend",
-            "command": "npm run start"
-        },
-        {
-            "name": "setup-git-and-push",
-            "description": "Initializes the Git repo, creates .gitignore, commits files, and pushes to GitHub",
-            "command": "git init && git add . && git commit -m 'Initial commit' && git branch -M main && git remote add origin <your-repo-url> && git push -u origin main"
-        }
-    ]
+    "commands": {
+        "generate-contact-api": "node commands/generate-contact-api.js",
+        "generate-contact-form": "node commands/generate-contact-form.js",
+        "connect-api-ui": "node commands/connect-api-ui.js",
+        "setup-git-and-push": "node commands/setup-git-and-push.js"
+    }
 }

@@ -1,123 +1,132 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const contactForm = document.getElementById('contactForm');
-    const contactsDiv = document.getElementById('contacts');
+    const form = document.getElementById('contactForm');
+    const contactList = document.getElementById('contactList');
+    const searchInput = document.getElementById('searchInput');
+    const submitButton = form.querySelector('button');
 
-    // Function to display contacts
-    const displayContacts = (contacts) => {
-        contactsDiv.innerHTML = '';
-        contacts.forEach(contact => {
-            const contactDiv = document.createElement('div');
-            contactDiv.className = 'contact';
-            contactDiv.innerHTML = `
-        <strong>${contact.name}</strong> - ${contact.email} - ${contact.phone}
-        <span class="edit" data-id="${contact.id}">Edit</span>
-        <span class="delete" data-id="${contact.id}">Delete</span>
-      `;
-            contactsDiv.appendChild(contactDiv);
-        });
-    };
+    const BASE_URL = 'http://localhost:3000/api/contacts';
 
-    // Function to fetch contacts
-    const fetchContacts = async () => {
-        try {
-            const response = await fetch('/api/contacts');
-            const contacts = await response.json();
-            displayContacts(contacts);
-        } catch (error) {
-            console.error('Error fetching contacts:', error);
-        }
-    };
+    // Fetch all contacts when page loads
+    fetchContacts();
 
-    // Function to add a contact
-    const addContact = async (contact) => {
-        try {
-            const response = await fetch('/api/contacts', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(contact)
-            });
-            const newContact = await response.json();
-            fetchContacts();
-        } catch (error) {
-            console.error('Error adding contact:', error);
-        }
-    };
+    // Submit handler (Add or Update)
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
 
-    // Function to edit a contact
-    const editContact = async (id, updatedContact) => {
-        try {
-            const response = await fetch(`/api/contacts/${id}`, {
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const editId = form.dataset.editId;
+
+        if (editId) {
+            // Edit existing contact
+            const response = await fetch(`${BASE_URL}/${editId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(updatedContact)
+                body: JSON.stringify({ name, email, phone })
             });
-            const editedContact = await response.json();
-            fetchContacts();
-        } catch (error) {
-            console.error('Error editing contact:', error);
-        }
-    };
 
-    // Function to delete a contact
-    const deleteContact = async (id) => {
-        try {
-            await fetch(`/api/contacts/${id}`, { method: 'DELETE' });
-            fetchContacts();
-        } catch (error) {
-            console.error('Error deleting contact:', error);
-        }
-    };
+            if (response.ok) {
+                const updatedContact = await response.json();
+                const tr = contactList.querySelector(`[data-id="${editId}"]`);
+                tr.querySelector('td:nth-child(1)').textContent = updatedContact.name;
+                tr.querySelector('td:nth-child(2)').textContent = updatedContact.email;
+                tr.querySelector('td:nth-child(3)').textContent = updatedContact.phone;
 
-    // Event listener for form submission
-    contactForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const phone = document.getElementById('phone').value;
-
-        addContact({ name, email, phone });
-        contactForm.reset();
-    });
-
-    // Event listener for edit button
-    contactsDiv.addEventListener('click', (event) => {
-        if (event.target.classList.contains('edit')) {
-            const id = event.target.dataset.id;
-            const contact = contactsDiv.querySelector(`.contact[data-id="${id}"]`);
-            const name = contact.querySelector('strong').textContent.split(' - ')[0];
-            const email = contact.querySelector('strong').textContent.split(' - ')[1];
-            const phone = contact.querySelector('strong').textContent.split(' - ')[2];
-
-            contactForm.querySelector('#name').value = name;
-            contactForm.querySelector('#email').value = email;
-            contactForm.querySelector('#phone').value = phone;
-
-            contactForm.querySelector('button').textContent = 'Update Contact';
-            contactForm.addEventListener('submit', (event) => {
-                event.preventDefault();
-                const updatedName = document.getElementById('name').value;
-                const updatedEmail = document.getElementById('email').value;
-                const updatedPhone = document.getElementById('phone').value;
-
-                editContact(id, { name: updatedName, email: updatedEmail, phone: updatedPhone });
-                contactForm.reset();
-                contactForm.querySelector('button').textContent = 'Add Contact';
+                form.reset();
+                delete form.dataset.editId;
+                submitButton.textContent = 'Add';
+            } else {
+                alert('Failed to update contact');
+            }
+        } else {
+            // Add new contact
+            const response = await fetch(BASE_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, email, phone })
             });
+
+            if (response.ok) {
+                const newContact = await response.json();
+                addContactToList(newContact);
+                form.reset();
+            } else {
+                alert('Failed to add contact');
+            }
         }
     });
 
-    // Event listener for delete button
-    contactsDiv.addEventListener('click', (event) => {
-        if (event.target.classList.contains('delete')) {
-            const id = event.target.dataset.id;
-            deleteContact(id);
-        }
+    // Filter contacts as you type
+    searchInput.addEventListener('input', () => {
+        const searchTerm = searchInput.value.toLowerCase();
+        const contacts = Array.from(contactList.children);
+        contacts.forEach(contact => {
+            const text = contact.textContent.toLowerCase();
+            contact.style.display = text.includes(searchTerm) ? '' : 'none';
+        });
     });
 
-    // Initial fetch of contacts
-    fetchContacts();
+    // Add a contact row to the table
+    function addContactToList(contact) {
+        const tr = document.createElement('tr');
+        tr.dataset.id = contact.id;
+
+        tr.innerHTML = `
+            <td>${contact.name}</td>
+            <td>${contact.email}</td>
+            <td>${contact.phone}</td>
+            <td>
+                <button class="edit-btn">Edit</button>
+                <button class="delete-btn">Delete</button>
+            </td>
+        `;
+
+        // Edit button
+        tr.querySelector('.edit-btn').addEventListener('click', async () => {
+            const response = await fetch(`${BASE_URL}/${contact.id}`);
+            if (response.ok) {
+                const data = await response.json();
+                document.getElementById('name').value = data.name;
+                document.getElementById('email').value = data.email;
+                document.getElementById('phone').value = data.phone;
+                form.dataset.editId = data.id;
+                submitButton.textContent = 'Update';
+            } else {
+                alert('Failed to fetch contact');
+            }
+        });
+
+        // Delete button
+        tr.querySelector('.delete-btn').addEventListener('click', async () => {
+            if (confirm('Are you sure you want to delete this contact?')) {
+                const response = await fetch(`${BASE_URL}/${contact.id}`, {
+                    method: 'DELETE'
+                });
+                if (response.ok) {
+                    tr.remove();
+                } else {
+                    alert('Failed to delete contact');
+                }
+            }
+        });
+
+        contactList.appendChild(tr);
+    }
+
+    // Load contacts on page load
+    async function fetchContacts() {
+        const response = await fetch(BASE_URL);
+        if (response.ok) {
+            const contacts = await response.json();
+            contactList.innerHTML = ''; // clear old list
+            contacts.forEach(addContactToList);
+        } else {
+            alert('Failed to fetch contacts');
+        }
+    }
 });
