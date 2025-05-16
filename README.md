@@ -16,7 +16,7 @@ The project is structured as follows:
 ├── backend
 │   ├── app.js
 │   ├── config
-│   │   └── database.js
+│   │   └── database.js---the db backup
 │   ├── controllers
 │   │   └── contactsController.js
 │   ├── models
@@ -49,7 +49,7 @@ To get started with the project, follow these steps:
 ### Installation
 1. Clone the repository:
    ```sh
-   git clone https://github.com/yourusername/contact-management-system.git
+   git clone [https://github.com/JOULifestyle/roocode_project].git
    cd contact-management-system
    ```
 2. Install the necessary dependencies:
@@ -162,3 +162,6 @@ Contributions are welcome! Please fork the repository and submit a pull request 
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+
+By Israel Olasehinde
