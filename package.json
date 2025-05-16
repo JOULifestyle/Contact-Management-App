@@ -4,8 +4,8 @@
   "description": "",
   "main": "backend/app.js",
   "scripts": {
-    "start": "node app.js",
-    "build": "npm rebuild sqlite3",
+    "start": "node backend/app.js",
+    "postinstall": "npm rebuild sqlite3",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
