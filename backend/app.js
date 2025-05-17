@@ -8,7 +8,13 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
+
+// Update this line:
+app.use(cors({
+    origin: 'https://contactformfrontend.vercel.app',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+}));
 
 app.use('/api/contacts', contactRoutes);
 

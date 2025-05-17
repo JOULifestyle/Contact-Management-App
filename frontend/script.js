@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('searchInput');
     const submitButton = form.querySelector('button');
 
-    const BASE_URL = 'http://localhost:3000/api/contacts';
+    const BASE_URL = 'https://contact-form-backend-pkif.onrender.com/';
 
     // Fetch all contacts when page loads
     fetchContacts();
