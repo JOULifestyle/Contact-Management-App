@@ -59,14 +59,15 @@ document.addEventListener('DOMContentLoaded', () => {
         tr.dataset.id = contact.id;
 
         tr.innerHTML = `
-            <td>${contact.name}</td>
-            <td>${contact.email}</td>
-            <td>${contact.phone}</td>
-            <td>
-                <button class="edit-btn">Edit</button>
-                <button class="delete-btn">Delete</button>
-            </td>
-        `;
+    <td data-label="Name">${contact.name}</td>
+    <td data-label="Email">${contact.email}</td>
+    <td data-label="Phone">${contact.phone}</td>
+    <td data-label="Actions">
+        <button class="edit-btn">✏️ Edit</button>
+        <button class="delete-btn">🗑️ Delete</button>
+    </td>
+`;
+
 
         // Edit button
         tr.querySelector('.edit-btn').addEventListener('click', async () => {
