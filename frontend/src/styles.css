@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root { color-scheme: light dark; }
+
+
+.container { @apply max-w-6xl mx-auto px-4; }
+.card { @apply bg-white dark:bg-zinc-900 rounded-2xl shadow p-2 md:p-4; }
+.btn { @apply inline-flex items-center justify-center rounded-lg px-4 py-2 text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50; }
+.input { @apply w-full max-w-full rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500; }
+.label { @apply text-sm font-semibold text-zinc-700 dark:text-zinc-300; }
+.table { @apply w-full text-left border-collapse; }
+.th { @apply bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 p-3; }
+.td { @apply border-b border-zinc-200 dark:border-zinc-800 p-3; }
+.badge { @apply text-xs px-2 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800; }
+
+
+/* Mobile card layout for table */
+@media (max-width: 768px) {
+table.table, thead, tbody, th, td, tr { display: block; }
+thead { display: table-header-group; }
+tbody tr { @apply card mb-2; }
+td.td { border: none; display: inline-block; margin-right: 0.5rem; padding: 0.25rem 0.5rem; }
+td.td::before { content: attr(data-label); @apply font-semibold mr-2 text-xs; }
+}

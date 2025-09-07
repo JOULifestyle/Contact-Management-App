@@ -1,8 +1,0 @@
-{
-    "commands": {
-        "generate-contact-api": "node commands/generate-contact-api.js",
-        "generate-contact-form": "node commands/generate-contact-form.js",
-        "connect-api-ui": "node commands/connect-api-ui.js",
-        "setup-git-and-push": "node commands/setup-git-and-push.js"
-    }
-}
