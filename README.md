@@ -7,7 +7,7 @@ The app provides a secure, scalable, and user-friendly solution to manage contac
 
 ## 🖼️ Preview
 
-![Contact App Screenshot](./docs\Contact_mockup.png)  
+![Contact App Screenshot](./docs/Contact_mockup.png)  
 ---
 
 ## 🚀 Features
