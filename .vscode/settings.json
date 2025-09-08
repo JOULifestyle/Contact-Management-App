@@ -1,3 +1,4 @@
+// To ignore git warnings for large repositories
 {
     "git.ignoreLimitWarning": true
 }
