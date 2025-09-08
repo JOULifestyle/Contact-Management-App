@@ -27,7 +27,7 @@ export default function ContactPage() {
     if (editingContact) setFormVisible(true);
   }, [editingContact]);
 
-  // --- Birthday helpers ---
+  //  Birthday helpers 
   function isTodayBirthday(birthday: string | null) {
     if (!birthday) return false;
     const today = new Date();
@@ -261,7 +261,7 @@ END:VCARD`
     <>
       <Header onSearch={(q) => setSearchQuery(q)} />
       <div className="container mx-auto p-4 pt-10">
-        {/* 🎂 Birthday section */}
+        {/* Birthday section */}
         <div className="mb-6">
           <h2 className="text-xl font-bold">🎂 Today's Birthdays</h2>
           {todayBirthdays.length === 0 ? (

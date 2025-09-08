@@ -5,6 +5,11 @@ The app provides a secure, scalable, and user-friendly solution to manage contac
 
 ---
 
+## 🖼️ Preview
+
+![Contact App Screenshot](frontend\public\Contact_mockup.png)  
+---
+
 ## 🚀 Features
 
 ### 🔐 Authentication & Security
@@ -12,6 +17,7 @@ The app provides a secure, scalable, and user-friendly solution to manage contac
 - Token expiration handling → auto-redirects to login.
 - Protected routes for logged-in users.
 - Validation on backend (email, phone numbers, unique contacts).
+- Forgot/Reset password flow via Gmail SMTP (App Passwords).
 
 ---
 
@@ -52,6 +58,7 @@ The app provides a secure, scalable, and user-friendly solution to manage contac
 - PostgreSQL database
 - Joi validation for inputs
 - Multer for file uploads (avatars, imports)
+- Nodemailer (Gmail SMTP) for Forgot Password
 
 **Other:**
 - JWT Authentication
@@ -59,13 +66,12 @@ The app provides a secure, scalable, and user-friendly solution to manage contac
 - Responsive design
 
 ---
-
-## 📂 Project Structure
 ```
+## 📂 Project Structure
 /frontend
 ├── src/
-│ ├── auth/ # Login, Signup, ProtectedRoute
-│ ├── components/ # UI components (Spinner,  Header, etc.)
+│ ├── auth/ # Login, Signup, ForgotPassword, ResetPassword
+│ ├── components/ # UI components (Spinner, Header, etc.)
 │ ├── context/ # Loading context
 │ ├── pages/ # Contacts
 │ ├── api.ts # API client (fetch wrapper)
@@ -74,13 +80,12 @@ The app provides a secure, scalable, and user-friendly solution to manage contac
 ├── prisma/ # Schema & migrations
 ├── src/
 │ ├── middleware/ # Auth routes & errorHandler
-│ ├── routes/ # Contact CRUD, import, user
+│ ├── routes/ # Contact CRUD, auth (forgot/reset password), import routes
 │ ├── controllers/ # contactController
 │ ├── utils/ # Validation, helpers
 │ └── index.ts # Express entrypoint
 
 ```
-
 ---
 
 ## ⚙️ Setup & Installation
@@ -94,21 +99,40 @@ cd backend
 npm install
 Configure .env:
 
+env
 DATABASE_URL="postgresql://user:password@localhost:5432/contactsdb"
 JWT_SECRET="your-secret-key"
+EMAIL_USER=yourgmail@gmail.com
+EMAIL_PASS=your_generated_app_password
 Run migrations:
-  npx prisma migrate dev
-  Start backend: npm run dev
-3️⃣ Frontend Setup
 
+npx prisma migrate dev
+Start backend:
+npm run dev
+
+3️⃣ Frontend Setup
 cd frontend
 npm install
 Configure .env:
 
+env
 VITE_API_BASE=http://localhost:8000
 Start frontend:
-
 npm run dev
+
+🔑 Forgot Password Setup
+Enable 2-Step Verification on your Gmail account.
+
+Generate an App Password (Google Account → Security → App Passwords).
+
+Use that password in your .env (EMAIL_PASS).
+
+Flow:
+
+POST /auth/forgot-password with { email } → sends reset link.
+
+POST /auth/reset-password/:token with { newPassword } → resets password.
+
 🖥 Usage
 Sign up / log in to access your contacts.
 
@@ -122,16 +146,16 @@ Enable bulk actions for managing large lists.
 
 Get reminders for birthdays.
 
-Stay logged in securely with JWT authentication.
+Reset password via Gmail reset link.
 
 📌 Roadmap
- Two-way sync with Google Contacts / Outlook
+Two-way sync with Google Contacts / Outlook
 
- Backeup
+Backup
 
- Group messaging via WhatsApp/Telegram
+Group messaging via WhatsApp/Telegram
 
- Calendar integration for reminders
+Calendar integration for reminders
 
 📄 License
-MIT License © 2025 Israel Olasehinde- JOULifestyle
+MIT License © 2025 Israel Olasehinde – JOULifestyle

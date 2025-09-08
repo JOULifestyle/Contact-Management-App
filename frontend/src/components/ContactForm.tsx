@@ -45,13 +45,13 @@ export default function ContactForm({
     try {
       let photoUrl = editing?.photoUrl || "";
 
-      // ✅ Step 1: upload file if selected
+      // Step 1: upload file if selected
       if (photo) {
         const { url } = await api.uploadAvatar(photo);
         photoUrl = url;
       }
 
-      // ✅ Step 2: save contact with JSON body
+      // Step 2: save contact with JSON body
       let result: Contact;
       if (editing) {
         result = await api.updateContact(editing.id, {
@@ -79,7 +79,7 @@ export default function ContactForm({
 
       onSaved(result);
 
-      // ✅ Reset form after save
+      //  Reset form after save
       setName("");
       setEmail("");
       setPhone("");

@@ -16,7 +16,7 @@ function cleanQuotes(str: string | undefined) {
   return str.replace(/^"(.*)"$/s, "$1").trim();
 }
 
-// ---------------- CSV Import ----------------
+//  CSV Import 
 router.post("/csv", authMiddleware, upload.single("file"), async (req: AuthRequest, res) => {
   if (!req.file) return res.status(400).json({ error: "No file uploaded" });
   const filePath = req.file.path;
@@ -70,7 +70,7 @@ router.post("/csv", authMiddleware, upload.single("file"), async (req: AuthReque
   }
 });
 
-// ---------------- vCard Import ----------------
+// vCard Import 
 router.post("/vcard", authMiddleware, upload.single("file"), async (req: AuthRequest, res) => {
   if (!req.file) return res.status(400).json({ error: "No file uploaded" });
   const filePath = req.file.path;

@@ -54,14 +54,14 @@ function formatContact(contact: any) {
   };
 }
 
-// 📌 Upload route
+//  Upload route
 router.post("/upload", upload.single("avatar"), async (req: AuthRequest, res) => {
   if (!req.file) return res.status(400).json({ error: "No file uploaded" });
   const fileUrl = `http://localhost:8000/uploads/${req.file.filename}`;
   res.json({ url: fileUrl });
 });
 
-// 📌 List contacts
+//  List contacts
 router.get("/", async (req: AuthRequest, res) => {
   const contacts = await prisma.contact.findMany({
     where: { userId: req.userId },
@@ -69,7 +69,7 @@ router.get("/", async (req: AuthRequest, res) => {
   res.json(contacts.map(formatContact));
 });
 
-// 📌 Create contact
+//  Create contact
 router.post("/", async (req: AuthRequest, res) => {
   const { error, value } = contactSchema.validate(req.body);
   if (error) return res.status(400).json({ error: error.details[0].message });
@@ -98,7 +98,7 @@ router.post("/", async (req: AuthRequest, res) => {
   }
 });
 
-// 📌 Update contact
+//  Update contact
 router.put("/:id", async (req: AuthRequest, res) => {
   const { id } = req.params;
   const { error, value } = contactSchema.validate(req.body);
@@ -134,7 +134,7 @@ router.put("/:id", async (req: AuthRequest, res) => {
   }
 });
 
-// 📌 Delete contact
+//  Delete contact
 router.delete("/:id", async (req: AuthRequest, res) => {
   const { id } = req.params;
 

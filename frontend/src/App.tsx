@@ -1,4 +1,4 @@
-// src/App.tsx
+
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import LoginPage from "./auth/LoginPage";
@@ -8,6 +8,8 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import { LoadingProvider, useLoading } from "./context/LoadingContext";
 import Spinner from "./components/Spinner";
 import { setLoadingHandler } from "./api";
+import ForgotPasswordPage from "./auth/ForgotPasswordPage";
+import ResetPasswordPage from "./auth/ResetPasswordPage";
 
 function AppRoutes() {
   const navigate = useNavigate();
@@ -20,6 +22,8 @@ function AppRoutes() {
     <Routes>
       <Route path="/login" element={<LoginPage onLogin={handleAuthSuccess} />} />
       <Route path="/signup" element={<SignupPage onSignup={handleAuthSuccess} />} />
+      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+<Route path="/reset-password/:token" element={<ResetPasswordPage />} />
       <Route
         path="/contacts"
         element={

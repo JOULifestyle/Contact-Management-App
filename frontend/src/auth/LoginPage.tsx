@@ -45,6 +45,12 @@ export default function LoginPage({ onLogin }: { onLogin: () => void }) {
       <button type="submit" className="btn w-full">
         Login
       </button>
+      <p className="mt-2 text-sm text-center">
+  <Link to="/forgot-password" className="text-blue-600 hover:underline">
+    Forgot your password?
+  </Link>
+</p>
+
 
       {/* Signup link */}
       <p className="mt-4 text-sm text-center">

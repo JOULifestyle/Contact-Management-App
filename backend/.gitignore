@@ -24,7 +24,7 @@ prisma/dev.db
 prisma/dev.db-journal
 prisma/migrations/
 
-# Uploads (if you don’t want uploaded photos in git)
+# Uploads 
 uploads/
 
 # OS
@@ -33,3 +33,6 @@ Thumbs.db
 
 # Build
 dist/
+
+
+.env

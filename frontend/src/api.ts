@@ -1,7 +1,7 @@
 export const API_BASE =
   import.meta.env.VITE_API_BASE || "http://localhost:8000";
 
-  // ---------- LOADING HANDLER ----------
+  //  LOADING HANDLER 
 let loadingHandler: ((loading: boolean) => void) | null = null;
 
 export function setLoadingHandler(handler: (loading: boolean) => void) {
@@ -42,7 +42,7 @@ async function request<T>(
       headers,
     });
 
-    // 🔹 If token expired/invalid → logout + redirect
+    //  If token expired/invalid - logout + redirect
     if (res.status === 401) {
       localStorage.removeItem("token");
       window.location.href = "/login";
@@ -62,7 +62,7 @@ async function request<T>(
 
 
 
-// ---------- AUTH ----------
+//  AUTH 
 export async function signup(email: string, password: string) {
   return request<{ token: string }>("/auth/signup", {
     method: "POST",
@@ -77,7 +77,7 @@ export async function login(email: string, password: string) {
   });
 }
 
-// ---------- CONTACTS ----------
+//  CONTACTS 
 export type Contact = {
   id: number;
   name: string;
@@ -114,7 +114,7 @@ export async function deleteContact(id: number) {
   });
 }
 
-// ---------- CONTACTS (with file upload) ----------
+//  CONTACTS (with file upload) 
 export async function createContactFormData(formData: FormData) {
   return request<Contact>("/contacts", {
     method: "POST",
@@ -159,7 +159,7 @@ export async function uploadAvatar(file: File) {
 }
 }
 
-// ---------- IMPORT ----------
+//  IMPORT 
 export async function importContacts(formData: FormData) {
   startLoading();
   try {
@@ -204,4 +204,14 @@ export async function importContactsVCard(formData: FormData) {
 } finally {
     stopLoading();
   }
+}
+
+export async function requestPasswordReset(email: string) {
+  const res = await fetch("http://localhost:8000/auth/forgot-password", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email }),
+  });
+  if (!res.ok) throw new Error("Failed to send reset email");
+  return res.json();
 }

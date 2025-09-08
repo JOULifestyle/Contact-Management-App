@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
-const JWT_SECRET = process.env.JWT_SECRET || "dev_secret"; // ⚠️ Use strong secret in production
+const JWT_SECRET = process.env.JWT_SECRET || "dev_secret"; 
 
 export function hashPassword(password: string) {
   return bcrypt.hash(password, 10);
