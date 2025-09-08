@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { API_BASE } from "../api"; 
 
 export default function ResetPasswordPage() {
   const { token } = useParams<{ token: string }>();
@@ -17,7 +18,7 @@ export default function ResetPasswordPage() {
     }
 
     try {
-      const res = await fetch(`http://localhost:8000/auth/reset-password/${token}`, {
+      const res = await fetch(`${API_BASE}/auth/reset-password/${token}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ newPassword: password }),
@@ -62,3 +63,4 @@ export default function ResetPasswordPage() {
     </form>
   );
 }
+

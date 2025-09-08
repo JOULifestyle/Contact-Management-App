@@ -11,6 +11,8 @@ import dayjs from "dayjs";
 const router = Router();
 router.use(authMiddleware);
 
+const BASE_URL = process.env.BACKEND_URL || "http://localhost:8000";
+
 // Upload Directory
 const uploadDir = path.join(__dirname, "../../uploads");
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
@@ -57,7 +59,7 @@ function formatContact(contact: any) {
 //  Upload route
 router.post("/upload", upload.single("avatar"), async (req: AuthRequest, res) => {
   if (!req.file) return res.status(400).json({ error: "No file uploaded" });
-  const fileUrl = `http://localhost:8000/uploads/${req.file.filename}`;
+  const fileUrl = `${BASE_URL}/uploads/${req.file.filename}`;
   res.json({ url: fileUrl });
 });
 
