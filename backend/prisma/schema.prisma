@@ -1,11 +1,10 @@
 generator client {
-provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
-
 datasource db {
-provider = "postgresql"
-url = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -15,20 +14,20 @@ model User {
   contacts  Contact[]
 }
 
-
 model Contact {
-  id        Int    @id @default(autoincrement())
-  name      String @unique
-  email     String @unique
-  phone     String @unique
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String?
+  phone     String?
   category  String?
   birthday  DateTime?
   company   String?
   photoUrl  String?
   userId    Int
-  user      User   @relation(fields: [userId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
 
-  @@unique([userId, phone]) 
-  @@unique([userId, email]) 
-  @@unique([userId, name]) 
+  // ✅ Ensure uniqueness only within a given user
+  @@unique([userId, phone])
+  @@unique([userId, email])
+  @@unique([userId, name])
 }
