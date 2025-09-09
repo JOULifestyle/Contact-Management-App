@@ -94,7 +94,7 @@ router.post("/", async (req: AuthRequest, res) => {
       return res.status(400).json({ error: "Invalid phone number format" });
     }
     if (err.code === "P2002") {
-      return res.status(409).json({ error: "Name, Email or phone already exists" });
+      return res.status(409).json({ error: "You already have a contact with this name, email or phone" });
     }
     res.status(500).json({ error: "Something went wrong" });
   }
