@@ -3,6 +3,7 @@
 A modern, full-stack **Contact Management System** built with **React + TypeScript + Tailwind** (frontend) and **Node.js + Prisma + PostgreSQL** (backend).  
 The app provides a secure, scalable, and user-friendly solution to manage contacts with advanced features like **bulk actions, import/export, reminders, and more**.
 
+Live preview: https://contact-management-app-zeta-inky.vercel.app
 ---
 
 ## 🖼️ Preview
