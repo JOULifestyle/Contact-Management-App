@@ -8,6 +8,7 @@ export default function ResetPasswordPage() {
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   async function handleSubmit(e: React.FormEvent) {
@@ -17,6 +18,7 @@ export default function ResetPasswordPage() {
       return;
     }
 
+    setLoading(true);
     try {
       const res = await fetch(`${API_BASE}/auth/reset-password/${token}`, {
         method: "POST",
@@ -29,21 +31,20 @@ export default function ResetPasswordPage() {
       setMessage(data.message || "Password reset successfully!");
       setError("");
 
-      // Redirect to login after success
       setTimeout(() => navigate("/login"), 2000);
     } catch (err: any) {
       setError(err.message || "Reset failed");
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 px-4">
-      {/* App name at top */}
       <h1 className="text-3xl font-extrabold text-teal-600 dark:text-teal-400 mb-8">
         Contact Manager
       </h1>
 
-      {/* Reset password card */}
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-8"
@@ -83,9 +84,10 @@ export default function ResetPasswordPage() {
 
         <button
           type="submit"
-          className="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 rounded-lg shadow-md transition"
+          disabled={loading}
+          className="w-full bg-teal-600 hover:bg-teal-700 disabled:opacity-50 text-white font-semibold py-2 rounded-lg shadow-md transition"
         >
-          Reset Password
+          {loading ? "Resetting…" : "Reset Password"}
         </button>
       </form>
     </div>
