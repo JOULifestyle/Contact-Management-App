@@ -124,19 +124,21 @@ export default function ContactForm({
           required
         />
       </div>
+
+      {/* ✅ Fixed Category select */}
       <div>
-  <label className="label">Category</label>
-  <select
-    className="w-full border rounded px-3 py-2 text-sm sm:text-base bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-    value={category}
-    onChange={(e) => setCategory(e.target.value)}
-  >
-    <option value="">Select category</option>
-    <option value="Family">Family</option>
-    <option value="Work">Work</option>
-    <option value="VIP">VIP</option>
-  </select>
-</div>
+        <label className="label">Category</label>
+        <select
+          className="input"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+        >
+          <option value="">Select category</option>
+          <option value="Family">Family</option>
+          <option value="Work">Work</option>
+          <option value="VIP">VIP</option>
+        </select>
+      </div>
 
       <div>
         <label className="label">Birthday</label>

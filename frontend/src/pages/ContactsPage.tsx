@@ -27,7 +27,7 @@ export default function ContactPage() {
     if (editingContact) setFormVisible(true);
   }, [editingContact]);
 
-  //  Birthday helpers 
+  // Birthday helpers
   function isTodayBirthday(birthday: string | null) {
     if (!birthday) return false;
     const today = new Date();
@@ -38,8 +38,9 @@ export default function ContactPage() {
     );
   }
 
-  const todayBirthdays = contacts.filter((c) => isTodayBirthday(c.birthday ?? null));
-
+  const todayBirthdays = contacts.filter((c) =>
+    isTodayBirthday(c.birthday ?? null)
+  );
 
   // Show toast on birthdays
   useEffect(() => {
@@ -53,15 +54,15 @@ export default function ContactPage() {
   }, [contacts]);
 
   async function handleBulkTag(tag: string) {
-  try {
-    await api.bulkTagContacts(selectedIds, tag);
-    toast.success(`Tagged ${selectedIds.length} as ${tag}`);
-    setSelectedIds([]);
-    await loadContacts();
-  } catch {
-    toast.error("Bulk tag failed");
+    try {
+      await api.bulkTagContacts(selectedIds, tag);
+      toast.success(`Tagged ${selectedIds.length} as ${tag}`);
+      setSelectedIds([]);
+      await loadContacts();
+    } catch {
+      toast.error("Bulk tag failed");
+    }
   }
-}
 
   async function handleBulkExportCSV() {
     try {
@@ -258,25 +259,27 @@ END:VCARD`
   return (
     <>
       <Header onSearch={(q) => setSearchQuery(q)} />
-      <div className="container mx-auto p-4 pt-10">
+      <div className="container mx-auto p-4 pt-10 text-gray-900 dark:text-gray-100">
         {/* Birthday section */}
         <div className="mb-6">
           <h2 className="text-xl font-bold">🎂 Today's Birthdays</h2>
           {todayBirthdays.length === 0 ? (
-            <p className="text-gray-600">No birthdays today</p>
+            <p className="text-gray-600 dark:text-gray-300">No birthdays today</p>
           ) : (
             todayBirthdays.map((c) => (
               <div
                 key={c.id}
-                className="bg-pink-100 border border-pink-300 p-3 rounded my-2 flex items-center gap-3"
+                className="bg-pink-100 dark:bg-pink-900 border border-pink-300 dark:border-pink-700 p-3 rounded my-2 flex items-center gap-3"
               >
                 <span className="text-2xl">🎉</span>
                 <div>
-                  <p className="font-semibold">{c.name}</p>
+                  <p className="font-semibold text-gray-900 dark:text-gray-100">
+                    {c.name}
+                  </p>
                   {c.phone && (
                     <a
                       href={`tel:${c.phone}`}
-                      className="text-blue-600 hover:underline text-sm"
+                      className="text-blue-600 dark:text-blue-400 hover:underline text-sm"
                     >
                       Call
                     </a>
@@ -306,10 +309,7 @@ END:VCARD`
             onChange={handleImport}
           />
 
-          <button
-            className="btn"
-            onClick={() => vcardInputRef.current?.click()}
-          >
+          <button className="btn" onClick={() => vcardInputRef.current?.click()}>
             Import vCard
           </button>
           <input
@@ -335,9 +335,11 @@ END:VCARD`
 
         {/* Bulk Actions Toolbar */}
         {selectedIds.length > 0 && (
-          <div className="bg-gray-100 p-2 mb-4 rounded">
+          <div className="bg-gray-100 dark:bg-gray-800 p-2 mb-4 rounded">
             <div className="mb-2">
-              <span className="font-medium">{selectedIds.length} selected</span>
+              <span className="font-medium text-gray-900 dark:text-gray-100">
+                {selectedIds.length} selected
+              </span>
             </div>
             <div className="flex flex-wrap gap-2">
               <button
@@ -348,7 +350,7 @@ END:VCARD`
               </button>
 
               <select
-                className="border rounded px-3 py-2 text-sm sm:text-base bg-white shadow-sm"
+                className="border rounded px-3 py-2 text-sm sm:text-base bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm"
                 onChange={(e) => {
                   if (e.target.value) {
                     handleBulkTag(e.target.value);
@@ -391,7 +393,7 @@ END:VCARD`
         </div>
 
         {loading && <p>Loading contacts...</p>}
-        {error && <p className="text-red-600">{error}</p>}
+        {error && <p className="text-red-600 dark:text-red-400">{error}</p>}
 
         {!loading && !error && (
           <ContactTable

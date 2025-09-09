@@ -21,7 +21,7 @@ export default function Header({ onSearch }: HeaderProps) {
   }
 
   return (
-    <header className="sticky top-0 left-0 w-full z-50 bg-gray-800 text-white shadow-md">
+    <header className="sticky top-0 left-0 w-full z-50 bg-gray-200 dark:bg-zinc-900 text-gray-900 dark:text-gray-100 shadow-md">
       <div className="container mx-auto p-4">
         <div className="flex flex-col gap-2">
           {/* Mobile top row: logo left, avatar/logout right */}
@@ -38,21 +38,23 @@ export default function Header({ onSearch }: HeaderProps) {
               )}
               <button
                 onClick={handleLogout}
-                className="bg-red-600 px-3 py-1 rounded hover:bg-red-700 text-sm md:text-base"
+                className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm md:text-base text-white"
               >
                 Logout
               </button>
             </div>
           </div>
+
           {/* Mobile search */}
           <div className="w-full md:hidden">
             <input
               type="text"
               placeholder="Search contacts..."
               onChange={(e) => onSearch(e.target.value)}
-              className="w-full px-3 py-2 rounded text-black outline-none"
+              className="w-full px-3 py-2 rounded text-gray-900 dark:text-gray-100 bg-white dark:bg-zinc-800 outline-none"
             />
           </div>
+
           {/* Desktop row: logo -> search -> avatar -> logout */}
           <div className="hidden md:flex md:items-center md:gap-4">
             <h1 className="text-lg font-bold">Contact Manager</h1>
@@ -61,7 +63,7 @@ export default function Header({ onSearch }: HeaderProps) {
                 type="text"
                 placeholder="Search contacts..."
                 onChange={(e) => onSearch(e.target.value)}
-                className="w-full px-3 py-2 rounded text-black outline-none"
+                className="w-full px-3 py-2 rounded text-gray-900 dark:text-gray-100 bg-white dark:bg-zinc-800 outline-none"
               />
             </div>
             <div className="flex items-center gap-3">
@@ -75,7 +77,7 @@ export default function Header({ onSearch }: HeaderProps) {
               )}
               <button
                 onClick={handleLogout}
-                className="bg-red-600 px-3 py-1 rounded hover:bg-red-700 text-sm md:text-base"
+                className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm md:text-base text-white"
               >
                 Logout
               </button>
