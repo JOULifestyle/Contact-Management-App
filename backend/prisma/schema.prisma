@@ -24,7 +24,7 @@ model Contact {
   category  String?
   birthday  DateTime?
   company   String?
-  photoUrl    String?
+  photoUrl  String?
   userId    Int
   user      User   @relation(fields: [userId], references: [id])
 }

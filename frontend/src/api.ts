@@ -215,3 +215,10 @@ export async function requestPasswordReset(email: string) {
   if (!res.ok) throw new Error("Failed to send reset email");
   return res.json();
 }
+
+export async function bulkTagContacts(ids: number[], category: string) {
+  return request<{ updated: number }>("/contacts/bulk-tag", {
+    method: "PUT",
+    body: JSON.stringify({ ids, category }),
+  });
+}

@@ -100,6 +100,31 @@ router.post("/", async (req: AuthRequest, res) => {
   }
 });
 
+router.put("/bulk-tag", async (req: AuthRequest, res) => {
+  const { ids, category } = req.body;
+
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return res.status(400).json({ error: "'ids' must be a non-empty array" });
+  }
+  if (!category || typeof category !== "string") {
+    return res.status(400).json({ error: "'category' is required" });
+  }
+
+  try {
+    const updated = await prisma.contact.updateMany({
+      where: {
+        id: { in: ids },
+        userId: req.userId,
+      },
+      data: { category },
+    });
+
+    res.json({ updated: updated.count });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 //  Update contact
 router.put("/:id", async (req: AuthRequest, res) => {
   const { id } = req.params;
@@ -148,5 +173,6 @@ router.delete("/:id", async (req: AuthRequest, res) => {
   await prisma.contact.delete({ where: { id: Number(id) } });
   res.json({ success: true });
 });
+
 
 export default router;

@@ -53,17 +53,15 @@ export default function ContactPage() {
   }, [contacts]);
 
   async function handleBulkTag(tag: string) {
-    try {
-      await Promise.all(
-        selectedIds.map((id) => api.updateContact(id, { category: tag }))
-      );
-      toast.success(`Tagged ${selectedIds.length} as ${tag}`);
-      setSelectedIds([]);
-      await loadContacts();
-    } catch {
-      toast.error("Bulk tag failed");
-    }
+  try {
+    await api.bulkTagContacts(selectedIds, tag);
+    toast.success(`Tagged ${selectedIds.length} as ${tag}`);
+    setSelectedIds([]);
+    await loadContacts();
+  } catch {
+    toast.error("Bulk tag failed");
   }
+}
 
   async function handleBulkExportCSV() {
     try {
