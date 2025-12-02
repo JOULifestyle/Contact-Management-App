@@ -14,17 +14,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// serve static uploaded files
-app.use("/uploads", (req, res, next) => {
-  const filePath = path.join(__dirname, "../uploads", req.path);
-  console.log(`Serving static file: /uploads${req.path}, full path: ${filePath}`);
-  if (fs.existsSync(filePath)) {
-    console.log("File exists, serving...");
-  } else {
-    console.log("File does not exist, will return 404");
-  }
-  next();
-}, express.static(path.join(__dirname, "../uploads")));
+// Static file serving removed - now using Cloudinary
 
 app.use("/auth", userRoutes);
 app.use("/contacts", contactRoutes);

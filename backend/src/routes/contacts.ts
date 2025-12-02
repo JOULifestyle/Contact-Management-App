@@ -7,23 +7,22 @@ import fs from "fs";
 import Joi from "joi";
 import { parsePhoneNumberFromString } from "libphonenumber-js";
 import dayjs from "dayjs";
+import { v2 as cloudinary } from "cloudinary";
 
 const router = Router();
 router.use(authMiddleware);
 
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 const BASE_URL = process.env.BACKEND_URL || "http://localhost:8000";
 
-// Upload Directory
-const uploadDir = path.join(__dirname, "../../uploads");
-if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir);
-
-// Multer setup
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, uploadDir),
-  filename: (_req, file, cb) =>
-    cb(null, Date.now() + "-" + file.originalname.replace(/\s+/g, "")),
-});
-const upload = multer({ storage });
+// Multer setup for memory storage
+const upload = multer({ storage: multer.memoryStorage() });
 
 // Joi validation schema
 const contactSchema = Joi.object({
@@ -59,15 +58,27 @@ function formatContact(contact: any) {
 //  Upload route
 router.post("/upload", upload.single("avatar"), async (req: AuthRequest, res) => {
   if (!req.file) return res.status(400).json({ error: "No file uploaded" });
-  const fileUrl = `${BASE_URL}/uploads/${req.file.filename}`;
-  console.log(`File uploaded: ${req.file.path}, URL: ${fileUrl}`);
-  // Check if file exists
-  if (fs.existsSync(req.file.path)) {
-    console.log("File exists on disk after upload");
-  } else {
-    console.log("File does not exist on disk after upload");
+
+  try {
+    // Upload to Cloudinary
+    const result = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: "contact-avatars" },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        }
+      );
+      stream.end(req.file!.buffer);
+    });
+
+    const fileUrl = (result as any).secure_url;
+    console.log(`File uploaded to Cloudinary: ${fileUrl}`);
+    res.json({ url: fileUrl });
+  } catch (error) {
+    console.error("Cloudinary upload error:", error);
+    res.status(500).json({ error: "Upload failed" });
   }
-  res.json({ url: fileUrl });
 });
 
 //  List contacts
