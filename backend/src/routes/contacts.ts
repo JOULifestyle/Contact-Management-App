@@ -60,6 +60,13 @@ function formatContact(contact: any) {
 router.post("/upload", upload.single("avatar"), async (req: AuthRequest, res) => {
   if (!req.file) return res.status(400).json({ error: "No file uploaded" });
   const fileUrl = `${BASE_URL}/uploads/${req.file.filename}`;
+  console.log(`File uploaded: ${req.file.path}, URL: ${fileUrl}`);
+  // Check if file exists
+  if (fs.existsSync(req.file.path)) {
+    console.log("File exists on disk after upload");
+  } else {
+    console.log("File does not exist on disk after upload");
+  }
   res.json({ url: fileUrl });
 });
 

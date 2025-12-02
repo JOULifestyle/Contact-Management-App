@@ -14,7 +14,10 @@ app.use(cors());
 app.use(express.json());
 
 // serve static uploaded files
-app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
+app.use("/uploads", (req, res, next) => {
+  console.log(`Serving static file: /uploads${req.path}`);
+  next();
+}, express.static(path.join(__dirname, "../uploads")));
 
 app.use("/auth", userRoutes);
 app.use("/contacts", contactRoutes);

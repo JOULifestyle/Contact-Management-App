@@ -26,7 +26,7 @@ model Contact {
   userId    Int
   user      User      @relation(fields: [userId], references: [id])
 
-  // ✅ Ensure uniqueness only within a given user
+  //  Ensure uniqueness only within a given user
   @@unique([userId, phone])
   @@unique([userId, email])
   @@unique([userId, name])
