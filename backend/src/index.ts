@@ -6,6 +6,7 @@ import cors from "cors";
 import userRoutes from "./routes/user";
 import contactRoutes from "./routes/contacts";
 import path from "path";
+import fs from "fs";
 import importRoutes from "./routes/import";
 import authRoutes from "./routes/auth";
 
@@ -15,7 +16,13 @@ app.use(express.json());
 
 // serve static uploaded files
 app.use("/uploads", (req, res, next) => {
-  console.log(`Serving static file: /uploads${req.path}`);
+  const filePath = path.join(__dirname, "../uploads", req.path);
+  console.log(`Serving static file: /uploads${req.path}, full path: ${filePath}`);
+  if (fs.existsSync(filePath)) {
+    console.log("File exists, serving...");
+  } else {
+    console.log("File does not exist, will return 404");
+  }
   next();
 }, express.static(path.join(__dirname, "../uploads")));
 
